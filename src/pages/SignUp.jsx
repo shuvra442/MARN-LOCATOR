@@ -2,41 +2,41 @@ import { useState } from "react";
 import { Link, useNavigate} from "react-router-dom";
 
 export default function SignUp() {
-  const [formData, setFormData]=useState({});
-  const [error, setError]=useState(null);
-  const [loading, setLoading]=useState(false);
+  const [formData, setFormData] = useState({});
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  // navigate : move to a specific page
   const navigate = useNavigate();
+
   // this handler fetch formdata data
-  const handleChange = (e)=>{
-    setFormData({...formData,
-    [e.target.id]: e.target.value,
-  });
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.id]: e.target.value });
   };
 
-// This data submit the formdata
-  const handleSubmit=async(e)=>{
+  //  submit formdata
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    try{
+    try {
       setLoading(true);
-      const res=await fetch('/api/auth/signup', 
-      {
-        method:'POST',
-        headers:{
-          'Content-Type':'application/json',
+      const res = await fetch("/api/auth/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
-        body:JSON.stringify(formData),
+        body: JSON.stringify(formData),
       });
       const data = await res.json();
       console.log(data);
-      if(data.success === false){
+      if (data.success === false) {
         setLoading(false);
         setError(data.message);
         return;
       }
       setLoading(false);
       setError(null);
-      navigate('/signin');
-    } catch(error){
+      navigate("/signin");
+    } catch (error) {
       setLoading(false);
       setError(error.message);
     }
